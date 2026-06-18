@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Link from 'next/link'; // ← ADICIONADO: Importamos o componente de link do Next.js
 
 interface AlunoRisco {
   id_aluno: string;
@@ -17,8 +18,8 @@ export default function PersonalDashboard() {
   ]);
 
   return (
-    <div style={{ backgroundColor: '#0A0B0E', color: 'white', minHeight: 'screen', padding: '2rem', fontFamily: 'sans-serif' }}>
-      <header style={{ display: 'flex', justifyContent: 'between', borderBottom: '1px solid #2C303B', paddingBottom: '1rem', marginBottom: '2rem' }}>
+    <div style={{ backgroundColor: '#0A0B0E', color: 'white', minHeight: '100vh', padding: '2rem', fontFamily: 'sans-serif' }}>
+      <header style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #2C303B', paddingBottom: '1rem', marginBottom: '2rem' }}>
         <div>
           <h1 style={{ fontSize: '1.875rem', fontWeight: 'bold' }}>Performance Intelligence <span style={{ color: '#EFFF00' }}>360</span></h1>
           <p style={{ color: '#9CA3AF', fontSize: '0.875rem' }}>Bem-vinda de volta, Ingrid. Monitoramento em tempo real.</p>
@@ -40,7 +41,23 @@ export default function PersonalDashboard() {
             <tbody style={{ fontSize: '0.875rem' }}>
               {alunos.map((aluno) => (
                 <tr key={aluno.id_aluno} style={{ borderTop: '1px solid #2C303B' }}>
-                  <td style={{ padding: '1rem 0' }}>{aluno.nome_completo}</td>
+                  {/* ALTERADO: Agora o nome do aluno é um Link dinâmico para a página dele */}
+                  <td style={{ padding: '1rem 0' }}>
+                    <Link 
+                      href={`/aluno/${aluno.id_aluno}`}
+                      style={{ 
+                        color: '#FFF', 
+                        textDecoration: 'none', 
+                        fontWeight: '600',
+                        cursor: 'pointer',
+                        transition: 'color 0.2s'
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = '#EFFF00')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = '#FFF')}
+                    >
+                      {aluno.nome_completo}
+                    </Link>
+                  </td>
                   <td style={{ padding: '1rem 0', color: '#9CA3AF' }}>{aluno.perfil_geracional}</td>
                   <td style={{ padding: '1rem 0' }}><span style={{ backgroundColor: '#FF3B3020', color: '#FF3B30', padding: '0.25rem 0.5rem', borderRadius: '0.25rem' }}>{aluno.ips_atual} pts</span></td>
                   <td style={{ padding: '1rem 0', textAlign: 'right', fontWeight: 'bold', color: aluno.ira_score > 50 ? '#FF3B30' : 'white' }}>{aluno.ira_score}%</td>
